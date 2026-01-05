@@ -1,0 +1,101 @@
+﻿@page "/"
+@using System.Linq;
+@using UTrack.V1
+@inject ApiClient Api
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Отслеживание груза</MudText>
+    
+    <MudPaper Elevation="4" Class="pa-4">
+        <div class="d-flex align-center">
+            <MudTextField @bind-Value="_searchString" 
+                          Label="Номер накладной или контейнера" 
+                          Variant="Variant.Outlined" 
+                          Clearable="true"
+                          OnKeyDown="@(e => e.Key == "Enter" ? HandleSearch() : Task.CompletedTask)" />
+            <MudButton Variant="Variant.Filled" 
+                       Color="Color.Primary" 
+                       Size="Size.Large" 
+                       OnClick="HandleSearch" 
+                       Class="ml-4"
+                       Disabled="_isLoading">
+                @if (_isLoading) { <MudProgressCircular Size="Size.Small" Indeterminate="true" /> }
+                else { <MudText>Найти</MudText> }
+            </MudButton>
+        </div>
+    </MudPaper>
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">@_errorMessage</MudAlert>
+    }
+
+    @if (_track != null)
+    {
+        <MudCard Class="mt-6" Elevation="4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5">Груз: @_track.Title</MudText>
+                    <MudChip T="string" Color="Color.Info" Variant="Variant.Text">
+                        @_track.DeclaredTimestamp.ToString("dd.MM.yyyy HH:mm")
+                    </MudChip>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.body1"><b>Откуда:</b> _track.Departure</MudText>
+                <MudText Typo="Typo.body1"><b>Куда:</b> _track.Destination</MudText>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.h6" Class="mb-4">История перемещений</MudText>
+                <MudTimeline TimelinePosition="TimelinePosition.Start">
+                    @* @foreach (var step in _track.History)
+                    {
+                        <MudTimelineItem Color="Color.Primary" Variant="Variant.Filled">
+                            <ItemOpposite>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">@step.Date.ToString("dd.MM.yyyy HH:mm")</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.h6">@step.Location</MudText>
+                                <MudText Typo="Typo.body2">@step.Description</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                    } *@
+                </MudTimeline>
+            </MudCardContent>
+        </MudCard>
+    }
+</MudContainer>
+
+    @code {
+    private string _searchString = "";
+    private bool _isLoading;
+    private ShipmentTrack? _track;
+    private string? _errorMessage;
+
+    private async Task HandleSearch()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString)) return;
+
+        _isLoading = true;
+        _errorMessage = null;
+        _track = null;
+
+        try 
+        {
+            (ShipmentTrack? track, string error) = await Api.ShipmentSearchAsync(_searchString);
+            _track = track;
+
+            if (_track is null)
+                _errorMessage = string.IsNullOrWhiteSpace(error) ? "Груз не найден" : error;
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TrackingPage/TrackingPage.csproj" />
+  <Project Path="UTrack/UTrack.csproj" />
+</Solution>
