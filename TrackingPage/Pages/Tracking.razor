@@ -1,5 +1,6 @@
 ﻿@page "/"
-@using System.Linq;
+@using System.Linq
+@using UTrack
 @using UTrack.V1
 @inject ApiClient Api
 
@@ -9,7 +10,7 @@
     <MudPaper Elevation="4" Class="pa-4">
         <div class="d-flex align-center">
             <MudTextField @bind-Value="_searchString" 
-                          Label="Номер накладной или контейнера" 
+                          Label="Номер контейнера или коносамента" 
                           Variant="Variant.Outlined" 
                           Clearable="true"
                           OnKeyDown="@(e => e.Key == "Enter" ? HandleSearch() : Task.CompletedTask)" />
@@ -33,20 +34,77 @@
     @if (_track != null)
     {
         <MudCard Class="mt-6" Elevation="4">
+            
             <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h5">@_track.Title</MudText>
-                    <MudChip T="string" Color="Color.Info" Variant="Variant.Text">
-                        @_track.DeclaredTimestamp.ToString("dd.MM.yyyy HH:mm")
-                    </MudChip>
+                <CardHeaderContent>                    
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="w-100">
+                        
+                        <MudText Typo="Typo.h5" Class="flex-grow-1 text-truncate">
+                            @_track.Title
+                        </MudText>
+
+                        <MudStack Spacing="0" AlignItems="AlignItems.End" Class="flex-none">
+                            <MudChip T="string"
+                                     Color="Color.Info"
+                                     Variant="Variant.Text"
+                                     Size="Size.Small"
+                                     Class="ma-0">
+                                от @_track.DeclaredTimestamp.ToStringOrEmpty("dd.MM.yyyy")
+                            </MudChip>
+
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary px-2">
+                                Количество: @_track.TotalQuantity
+                            </MudText>
+                        </MudStack>
+                        
+                    </MudStack>
                 </CardHeaderContent>
             </MudCardHeader>
+           
             <MudCardContent>
-                <MudText Typo="Typo.body1"><b>Откуда:</b> _track.Departure</MudText>
-                <MudText Typo="Typo.body1"><b>Куда:</b> _track.Destination</MudText>
-                
+
+                <MudGrid Spacing="1" Class="mt-2">
+                    
+                    <MudItem xs="4" sm="3">
+                        <MudText Typo="Typo.body1">Судозаход:</MudText>
+                    </MudItem>
+                    <MudItem xs="8" sm="9">
+                        <MudText Typo="Typo.body1" Class="ff-mono">
+                            <b>@_track.HandlingSummary.VesselCallTitle</b>
+                        </MudText>
+                    </MudItem>
+
+                    <MudItem xs="4" sm="3">
+                        <MudText Typo="Typo.body1">Коносамент:</MudText>
+                    </MudItem>
+                    <MudItem xs="8" sm="9">
+                        <MudText Typo="Typo.body1" Class="ff-mono">
+                            <b>@_track.BlNumber</b>
+                        </MudText>
+                    </MudItem>
+
+                    <MudItem xs="4" sm="3">
+                        <MudText Typo="Typo.body1">Обработка начата:</MudText>
+                    </MudItem>
+                    <MudItem xs="8" sm="9">
+                        <MudText Typo="Typo.body1" Class="ff-mono">
+                            <b>@_track.HandlingSummary.IsStartedTimestamp.ToStringOrEmpty()</b>
+                        </MudText>
+                    </MudItem>
+
+                    <MudItem xs="4" sm="3">
+                        <MudText Typo="Typo.body1">Обработка завершена:</MudText>
+                    </MudItem>
+                    <MudItem xs="8" sm="9">
+                        <MudText Typo="Typo.body1" Class="ff-mono">
+                            <b>@_track.HandlingSummary.IsFinishedTimestamp.ToStringOrEmpty()</b>
+                        </MudText>
+                    </MudItem>
+
+                </MudGrid>
+
                 <MudDivider Class="my-4" />
-                
+
                 <MudText Typo="Typo.h6" Class="mb-4">История перемещений</MudText>
                 <MudTimeline TimelinePosition="TimelinePosition.Start">
                     @foreach (var handlingEvent in _track.HandlingEvents)
@@ -55,7 +113,7 @@
                             <ItemContent>
                                 
                                 <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="w-100">
-                                    <MudText Typo="Typo.h6">@handlingEvent.HandlingEventTypeRu</MudText>
+                                    <MudText Typo="Typo.h6">@handlingEvent.TypeRu</MudText>
                                     <MudChip T="string" Color="Color.Info" Variant="Variant.Text" Size="Size.Small">
                                         @handlingEvent.Timestamp.ToString("dd.MM.yyyy HH:mm")
                                     </MudChip>
@@ -69,7 +127,7 @@
                                         </MudText>
                                     </MudStack>
                                     <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                                        Количество: @handlingEvent.AllocatedQuantity
+                                        Количество: @handlingEvent.Quantity
                                     </MudText>
                                 </MudStack>
 
