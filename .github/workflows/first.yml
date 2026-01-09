@@ -1,0 +1,19 @@
+name: Мой первый workflow
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Сказать привет
+      run: echo "Привет от GitHub Actions!"
+      
+    - name: Показать информацию
+      run: |
+        echo "Репо: ${{ github.repository }}"
+        echo "Ветка: ${{ github.ref }}"
+        echo "Автор: ${{ github.actor }}"
