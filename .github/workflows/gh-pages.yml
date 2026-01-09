@@ -43,9 +43,9 @@ name: Deploy Blazor WASM to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -76,6 +76,15 @@ jobs:
       run: |
         cp ./publish/wwwroot/index.html ./publish/wwwroot/404.html
     
+    - name: Adjust base href for repo pages
+      run: |
+         REPO_NAME="${GITHUB_REPOSITORY##*/}"
+         INDEX_FILE="publish/wwwroot/index.html"
+         if [ -f "$INDEX_FILE" ]; then
+           # заменяет <base href="/" /> на <base href="/repo-name/" />
+           sed -i "s|<base href=\"/\" />|<base href=\"/$REPO_NAME/\" />|g" "$INDEX_FILE"
+         fi
+
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
