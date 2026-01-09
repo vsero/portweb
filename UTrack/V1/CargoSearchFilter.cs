@@ -8,7 +8,7 @@ public enum CargoFlow
 
 public class CargoSearchFilter
 {
-    public string SearchString { get; set; } = "DLTU9018145";
+    public string SearchString { get; set; } = string.Empty;
     public CargoFlow CargoFlow { get; set; } = CargoFlow.Inbound;
     public bool IsContainerUnit { get; set; } = true;
     public bool IsEmptyContainerUnit { get; set; } = false;
