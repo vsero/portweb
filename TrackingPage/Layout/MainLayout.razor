@@ -42,10 +42,16 @@
     </MudMainContent>
 </MudLayout> *@
 
+<div style="position:fixed; top:0; background:red; z-index:9999;">
+    Debug: @(jsonData ?? "Data is NULL")
+</div>
+
 @code {
 
     private MudThemeProvider? _mudThemeProvider;
     private MudTheme _theme = Themes.DefaultTheme;
+
+    private string? jsonData;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -59,7 +65,7 @@
             // 2. Проверяем Telegram
             try
             {
-                var jsonData = await JS.InvokeAsync<string>("getTelegramData");
+                jsonData = await JS.InvokeAsync<string>("getTelegramData");
                 if (!string.IsNullOrEmpty(jsonData))
                 {
                     var tgData = JsonSerializer.Deserialize<UserContext.TgInitData>(jsonData,
