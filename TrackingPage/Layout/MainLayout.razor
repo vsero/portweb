@@ -1,7 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor.Services
 @inject IBrowserViewportService ViewportService
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+@inject UserContext UserContext
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@UserContext.IsDarkMode" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 <MudPopoverProvider />
@@ -32,10 +33,6 @@
         </MudAppBar>
     }
 
-    <MudDrawer @bind-Open="DrawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-        <NavMenu />
-    </MudDrawer>
-
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-4">
             @Body
@@ -44,22 +41,19 @@
 </MudLayout> *@
 
 @code {
-    private bool _isDarkMode;
-    private bool _isMobile;
+
     private MudThemeProvider? _mudThemeProvider;
     private MudTheme _theme = Themes.DefaultTheme;
-
-    private bool DrawerOpen = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && _mudThemeProvider is not null)
         {
-            // Получаем текущий Breakpoint (xs, sm, md...)
+            // Setup UserContext
             var currentBreakpoint = await ViewportService.GetCurrentBreakpointAsync();
-            _isMobile = currentBreakpoint <= Breakpoint.Sm;
+            UserContext.IsMobile = currentBreakpoint <= Breakpoint.Sm;
 
-            _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+            UserContext.IsDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
             StateHasChanged();
         }
     }

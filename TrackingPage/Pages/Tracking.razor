@@ -3,6 +3,8 @@
 @using UTrack
 @using UTrack.V1
 @inject ApiClient Api
+@inject UserContext UserContext
+@inject IBrowserViewportService ViewportService
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
 
@@ -156,51 +158,69 @@
                     </MudStack>
                 }
                 
-                <MudTimeline TimelinePosition="TimelinePosition.Start"
-                             TimelineOrientation="TimelineOrientation.Vertical"
-                             Class="pa-0 ma-0 custom-compact-timeline">
+                @if (UserContext.IsMobile)
+                {
+                    <MudStack Spacing="2">
+                        @foreach (var handlingEvent in _visibleEvents)
+                        {
+                            @EventCard(handlingEvent)
+                            <MudDivider />
+                        }
+                    </MudStack>
+                }
+                else
+                {
+                    <MudTimeline TimelinePosition="TimelinePosition.Start"
+                                 TimelineOrientation="TimelineOrientation.Vertical">
 
-                    @foreach (var handlingEvent in _visibleEvents)
-                    {
-                        <MudTimelineItem Color="Color.Primary" Variant="Variant.Filled" Gutters="false">
-                            <ItemContent>
-
-                                <MudGrid Spacing="2">
-                                    <MudItem xs="8">
-                                        <MudStack Spacing="0" Class="flex-grow-1">
-                                            <MudText Typo="Typo.h6">@handlingEvent.TypeRu</MudText>
-                                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                                <MudIcon Icon="@HandlingEventIcon(handlingEvent)" Color="Color.Primary" />
-                                                <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                                                    @handlingEvent.Location.Title
-                                                </MudText>
-                                            </MudStack>
-                                        </MudStack>
-                                    </MudItem>
-                                    <MudItem xs="4">
-                                        <MudStack AlignItems="AlignItems.End" Spacing="0" Class="flex-grow-none">
-                                            <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.FlexEnd" Spacing="2">
-                                                <MudText Typo="Typo.body2">@($"{handlingEvent.Timestamp:dd.MM.yyyy}")</MudText>
-                                                <MudText Typo="Typo.body2"> @($"{handlingEvent.Timestamp:HH:mm}")</MudText>
-                                            </MudStack>
-                                            <MudText Typo="Typo.body2" Class="mud-text-secondary text-truncate">
-                                                Кол-во: @handlingEvent.Quantity
-                                            </MudText>
-                                        </MudStack>
-                                    </MudItem>
-                                </MudGrid>
-
-                            </ItemContent>
-                        </MudTimelineItem>
-                    }
-                </MudTimeline>
+                        @foreach (var handlingEvent in _visibleEvents)
+                        {
+                            <MudTimelineItem Color="Color.Primary" Variant="Variant.Outlined">
+                                <ItemContent>
+                                    @EventCard(handlingEvent)
+                                </ItemContent>
+                            </MudTimelineItem>
+                        }
+                    </MudTimeline>                    
+                }
 
             </MudCardContent>
         </MudCard>
     }
 </MudContainer>
 
+
     @code {
+
+    #region RenderFragments
+
+    private RenderFragment<CargoHandlingEvent> EventCard => (handlingEvent) => __builder =>
+    {
+        <MudGrid Spacing="2">
+            <MudItem xs="8">
+                <MudText Typo="Typo.h6" Class="mt-n1">@handlingEvent.TypeRu</MudText>
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                    <MudIcon Icon="@HandlingEventIcon(handlingEvent)" Color="Color.Primary" />
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                        @handlingEvent.Location.Title
+                    </MudText>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="4">
+                <MudStack AlignItems="AlignItems.End" Spacing="0" Class="mt-1">
+                    <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.FlexEnd" Spacing="2">
+                        <MudText Typo="Typo.body2">@($"{handlingEvent.Timestamp:dd.MM.yyyy}")</MudText>
+                        <MudText Typo="Typo.body2"> @($"{handlingEvent.Timestamp:HH:mm}")</MudText>
+                    </MudStack>
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                        Кол-во: @handlingEvent.Quantity
+                    </MudText>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    };
+
+    #endregion
 
     private CancellationTokenSource? _cts;
 
@@ -254,11 +274,11 @@
 
     private string HandlingEventIcon(CargoHandlingEvent ev) => ev switch
     {
-        { Location.Vehicle: not null }  => Icons.Material.Filled.LocalShipping,
-        { Location.Vessel: not null }   => Icons.Material.Filled.DirectionsBoat,
-        { Location.Yard: not null }     => Icons.Material.Filled.Warehouse,
-        { Location.Gate: not null }     => Icons.Material.Filled.MeetingRoom,
-        _                               => Icons.Material.Filled.HelpOutline
+        { Location.Vehicle: not null } => Icons.Material.Filled.LocalShipping,
+        { Location.Vessel: not null } => Icons.Material.Filled.DirectionsBoat,
+        { Location.Yard: not null } => Icons.Material.Filled.Warehouse,
+        { Location.Gate: not null } => Icons.Material.Filled.MeetingRoom,
+        _ => Icons.Material.Filled.HelpOutline
     };
 
     public void Dispose()
