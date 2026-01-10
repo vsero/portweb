@@ -1,7 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor.Services
+@using System.Text.Json
 @inject IBrowserViewportService ViewportService
 @inject UserContext UserContext
+@inject IJSRuntime JS
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@UserContext.IsDarkMode" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -49,11 +51,28 @@
     {
         if (firstRender && _mudThemeProvider is not null)
         {
-            // Setup UserContext
+            // 1. Setup UserContext
             var currentBreakpoint = await ViewportService.GetCurrentBreakpointAsync();
             UserContext.IsMobile = currentBreakpoint <= Breakpoint.Sm;
-
             UserContext.IsDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+
+            // 2. Проверяем Telegram
+            var jsonData = await JS.InvokeAsync<string>("getTelegramData");
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                var tgData = JsonSerializer.Deserialize<UserContext.TgInitData>(jsonData,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (tgData?.User != null)
+                {
+                    UserContext.IsTg = true;
+                    UserContext.TgUserId = tgData.User.Id;
+                    UserContext.TgUserName = tgData.User.Username;
+                    // Данные о чате с ботом в TWA обычно идентичны ID пользователя
+                    UserContext.TgChatId = tgData.User.Id.ToString();
+                }
+            }
+
             StateHasChanged();
         }
     }

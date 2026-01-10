@@ -33,4 +33,11 @@ public class UserContext
         }
     }
 
+    public bool IsTg { get; set; }
+    public long? TgUserId { get; set; }
+    public string? TgUserName { get; set; }
+    public string? TgChatId { get; set; }
+    public class TgInitData { public TgUser User { get; set; } }
+    public class TgUser { public long Id { get; set; } public string Username { get; set; } }
+
 }

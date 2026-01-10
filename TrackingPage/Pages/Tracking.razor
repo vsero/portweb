@@ -6,7 +6,7 @@
 @inject UserContext UserContext
 @inject IBrowserViewportService ViewportService
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 mb-5">
 
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Отслеживание груза</MudText>
@@ -187,6 +187,10 @@
             </MudCardContent>
         </MudCard>
     }
+
+    <MudText Typo="Typo.body2">@UserContext.IsTg.ToString()</MudText>
+    <MudText Typo="Typo.body2">@UserContext.TgChatId</MudText>
+    <MudText Typo="Typo.body2">@UserContext.TgUserName</MudText>
 </MudContainer>
 
 

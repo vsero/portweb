@@ -19,11 +19,22 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
 
+    <script src="telegram.org"></script>
+    <script>
+        window.getTelegramData = () => {
+            const tg = window.Telegram.WebApp;
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                return JSON.stringify(tg.initDataUnsafe);
+            }
+            return null;
+        };
+    </script>
+
     <style>
         :root {
             /* MudBlazor theme */
             --app-bg: #F5F7FA;
-            --app-text: #1F2933; 
+            --app-text: #1F2933;
             --app-loader-stroke: #0088CC; /* MudBlazor Primary */
             --app-loader-bg: var(--app-bg);
         }
