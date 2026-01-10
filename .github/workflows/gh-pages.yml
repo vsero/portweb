@@ -28,7 +28,7 @@ jobs:
     - name: App Settings Variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: './wwwroot/appsettings.json'
+        files: '**/wwwroot/appsettings.json'
       env:
         ApiSettings.XApiKey: ${{ secrets.API_KEY }}    
 
