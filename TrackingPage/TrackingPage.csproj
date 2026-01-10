@@ -17,4 +17,8 @@
     <ProjectReference Include="..\UTrack\UTrack.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Js\" />
+  </ItemGroup>
+
 </Project>

@@ -19,15 +19,27 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
 
-    <script src="telegram.org"></script>
+    <script src="js/telegram-web-app.js"></script>
     <script>
         window.getTelegramData = () => {
-            const tg = window.Telegram.WebApp;
-            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                return JSON.stringify(tg.initDataUnsafe);
+            try {
+                // Проверяем, что объект Telegram существует в глобальном окне
+                if (window.Telegram && window.Telegram.WebApp) {
+                    const tg = window.Telegram.WebApp;
+                    // Сообщаем Telegram, что приложение готово (важно для Mini App)
+                    tg.ready();
+
+                    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                        return JSON.stringify(tg.initDataUnsafe);
+                    }
+                }
+            } catch (e) {
+                console.error("Ошибка при получении данных Telegram:", e);
             }
             return null;
         };
+
+
     </script>
 
     <style>
