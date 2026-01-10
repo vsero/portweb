@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using TrackingPage;
-using TrackingPage.Services;
 using UTrack.V1;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -22,8 +21,6 @@ builder.Services.AddScoped(sp => new HttpClient
 
 builder.Services.AddScoped(sp => 
     new ApiClient(sp.GetRequiredService<HttpClient>(), xApiKey));
-
-builder.Services.AddScoped<UserContext>();
 
 builder.Services.AddMudServices();
 

@@ -3,7 +3,7 @@
 @using UTrack
 @using UTrack.V1
 @inject ApiClient Api
-@inject UserContext UserContext
+@* @inject UserContext UserContext *@
 @inject IBrowserViewportService ViewportService
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 mb-5">
@@ -189,8 +189,8 @@
     }
 
     <MudText Typo="Typo.body2">@UserContext.IsTg.ToString()</MudText>
-    <MudText Typo="Typo.body2">@UserContext.TgChatId</MudText>
-    <MudText Typo="Typo.body2">@UserContext.TgUserName</MudText>
+    <MudText Typo="Typo.body2">@UserContext.TgUser.Id</MudText>
+    <MudText Typo="Typo.body2">@UserContext.TgUser.Username</MudText>
 </MudContainer>
 
 
@@ -226,6 +226,8 @@
 
     #endregion
 
+    [CascadingParameter] public UserContext UserContext { get; set; } = new();
+
     private CancellationTokenSource? _cts;
 
     private bool _isLoading;
@@ -236,6 +238,11 @@
     private int _eventsCount;
     private IEnumerable<CargoHandlingEvent> _visibleEvents = [];
 
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var uc = UserContext;
+    }
 
     private void ToggleTimeline()
     {

@@ -1,13 +1,12 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TrackingPage.Services;
+﻿namespace TrackingPage.Services;
 
 public class UserContext
 {
-    public event Action? OnContextChanged;
+    public event Action? OnChange;
 
     private bool _isMobile;
     private bool _isDarkMode;
+    private bool _isTg;
 
     public bool IsMobile
     {
@@ -17,7 +16,7 @@ public class UserContext
             if (_isMobile != value)
             {
                 _isMobile = value;
-                OnContextChanged?.Invoke();
+                NotifyChanged();
             }
         }
     }
@@ -30,35 +29,38 @@ public class UserContext
             if (_isDarkMode != value)
             {
                 _isDarkMode = value;
-                OnContextChanged?.Invoke();
+                NotifyChanged();
             }
         }
     }
 
-    public bool IsTg { get; set; }
-    public long TgUserId { get; set; }
-    public string TgUserName { get; set; } = string.Empty;
-    public string TgChatId { get; set; } = string.Empty;
+    public bool IsTg
+    {
+        get => _isTg;
+        set
+        {
+            if (_isTg != value)
+            {
+                _isTg = value;
+                NotifyChanged();
+            }
+        }
+    }
+    public TgUser TgUser { get; set; } = new();
+
+    private void NotifyChanged() => OnChange?.Invoke();
 
 }
 
 public class TgInitData
 {
-    [JsonPropertyName("user")] 
     public TgUser? User { get; set; }
-
-    [JsonPropertyName("query_id")]
-    public string? QueryId { get; set; }
+    public string QueryId { get; set; } = string.Empty;
 }
 
 public class TgUser
 {
-    [JsonPropertyName("id")]
     public long Id { get; set; }
-
-    [JsonPropertyName("username")]
-    public string? Username { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public string? FirstName { get; set; }
+    public string? Username { get; set; } = string.Empty;
+    public string? FirstName { get; set; } = string.Empty;
 }
