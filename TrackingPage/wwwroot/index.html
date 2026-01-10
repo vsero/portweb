@@ -12,6 +12,53 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <style>
+        :root {
+            /* MudBlazor theme */
+            --app-bg: #F5F7FA;
+            --app-text: #1F2933; 
+            --app-loader-stroke: #0088CC; /* MudBlazor Primary */
+            --app-loader-bg: var(--app-bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* MudBlazor Dark Mode */
+                --app-bg: #32333D;
+                --app-text: #E6F4FF;
+                --app-loader-stroke: #26A5E4;
+                --app-loader-bg: var(--app-bg);
+            }
+        }
+
+        html, body {
+            background-color: var(--app-bg);
+        }
+
+        .loading-progress circle {
+            fill: none;
+            stroke: var(--app-loader-bg);
+        }
+
+            .loading-progress circle:last-child {
+                stroke: var(--app-loader-stroke);
+            }
+
+        .loading-progress-text {
+            fill: var(--app-text); /* Если текст внутри SVG (как <text>) */
+            color: var(--app-text); /* Если текст в обычном div */
+            font-family: "Roboto", sans-serif;
+            font-weight: 500;
+        }
+    </style>
+
 </head>
 
 <body>

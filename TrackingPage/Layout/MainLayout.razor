@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@using MudBlazor.Services
+@inject IBrowserViewportService ViewportService
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -10,6 +12,7 @@
 
 @code {
     private bool _isDarkMode;
+    private bool _isMobile;
     private MudThemeProvider? _mudThemeProvider;
     private MudTheme _theme = Themes.DefaultTheme;
 
@@ -17,6 +20,10 @@
     {
         if (firstRender && _mudThemeProvider is not null)
         {
+            // Получаем текущий Breakpoint (xs, sm, md...)
+            var currentBreakpoint = await ViewportService.GetCurrentBreakpointAsync();
+            _isMobile = currentBreakpoint <= Breakpoint.Sm;
+
             _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
             StateHasChanged();
         }
