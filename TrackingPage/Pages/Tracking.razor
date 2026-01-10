@@ -76,7 +76,7 @@
                             @_track.Title
                         </MudText>
 
-                        <MudStack Spacing="0" AlignItems="AlignItems.End" Class="flex-none">
+                        <MudStack Spacing="0" AlignItems="AlignItems.End" AlignSelf="AlignSelf.Start" Class="flex-none">
                             <MudChip T="string"
                                      Color="Color.Info"
                                      Variant="Variant.Text"
@@ -158,7 +158,7 @@
                         <MudTimelineItem Color="Color.Primary" Variant="Variant.Filled">
                             <ItemContent>
                                 
-                                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="w-100">
+                                <MudStack Row="true" AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="w-100">
                                     <MudText Typo="Typo.h6">@handlingEvent.TypeRu</MudText>
                                     <MudChip T="string" Color="Color.Info" Variant="Variant.Text" Size="Size.Small">
                                         @handlingEvent.Timestamp.ToString("dd.MM.yyyy HH:mm")
