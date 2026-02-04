@@ -3,6 +3,7 @@
 @using System.Text.Json
 @inject IBrowserViewportService ViewportService
 @inject IJSRuntime JS
+@inject UserContext UserContext
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@UserContext.IsDarkMode" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -33,9 +34,7 @@
     </MudHidden>
     
     <MudMainContent Class="pt-0 pb-16 pt-md-16 pb-md-0">
-        <CascadingValue Value="UserContext">
-            @Body
-        </CascadingValue>
+        @Body
     </MudMainContent>
 
 </MudLayout>
@@ -44,7 +43,6 @@
 
     private MudThemeProvider? _mudThemeProvider;
     private MudTheme _theme = Themes.DefaultTheme;
-    private UserContext UserContext = new UserContext();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -55,8 +53,6 @@
         }
     }
 
-    #region Setup User Context
-
     private async Task SetupUserContext()
     {
         if (_mudThemeProvider is not null)
@@ -65,37 +61,7 @@
             UserContext.IsMobile = currentBreakpoint <= Breakpoint.Sm;
             UserContext.IsDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
         }
-        await SetupTelegramContext();
     }
 
-    private async Task SetupTelegramContext()
-    {
-        try
-        {
-            var jsonData = await JS.InvokeAsync<string>("getTelegramData");
-            if (!string.IsNullOrEmpty(jsonData))
-            {
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-                };
-                var tgData = JsonSerializer.Deserialize<TgInitData>(jsonData, options);
-
-                if (tgData?.User != null)
-                {
-                    UserContext.IsTg = true;
-                    UserContext.TgUser = tgData.User;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка Telegram SDK: {ex.Message}");
-        }
-        
-    }
-
-    #endregion
 
 }

@@ -4,15 +4,15 @@ namespace TrackingPage.Services;
 
 public class UserContext
 {
-    //private readonly IJSRuntime _js;
+    private readonly IJSRuntime _js;
     public event Action? OnChange;
 
     private bool _isMobile;
     private bool _isDarkMode;
     private bool _isTg;
-    //private string _culture = "ru-RU";
+    private string _culture = "ru-RU";
 
-    //public UserContext(IJSRuntime js) => _js = js;
+    public UserContext(IJSRuntime js) => _js = js;
 
     public bool IsMobile
     {
@@ -53,24 +53,24 @@ public class UserContext
         }
     }
 
-    //public string Culture
-    //{
-    //    get => _culture;
-    //    set
-    //    {
-    //        if (_culture != value)
-    //        {
-    //            _culture = value;
-    //            NotifyChanged();
-    //        }
-    //    }
-    //}
+    public string Culture
+    {
+        get => _culture;
+        set
+        {
+            if (_culture != value)
+            {
+                _culture = value;
+                NotifyChanged();
+            }
+        }
+    }
 
-    //public async Task SetCultureAsync(string culture)
-    //{
-    //    await _js.InvokeVoidAsync("localStorage.setItem", "selectedCulture", culture);
-    //    Culture = culture;
-    //}
+    public async Task SetCultureAsync(string culture)
+    {
+        await _js.InvokeVoidAsync("localStorage.setItem", "selectedCulture", culture);
+        Culture = culture;
+    }
 
     public TgUser TgUser { get; set; } = new();
 

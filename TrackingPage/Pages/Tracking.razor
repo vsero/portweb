@@ -6,6 +6,7 @@
 @using LM = TrackingPage.Resources.LModel
 @using LP = TrackingPage.Resources.LTracking
 @inject ApiClient Api
+@inject UserContext UserContext
 @inject IBrowserViewportService ViewportService
 @inject IStringLocalizer<TrackingPage.Resources.LModel> LMs
 
@@ -230,8 +231,6 @@
     };
 
     #endregion
-
-    [CascadingParameter] public UserContext UserContext { get; set; } = new();
 
     private bool _isLoading;
     private bool _isExpanded;
