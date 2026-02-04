@@ -1,6 +1,8 @@
 ﻿@page "/vessels"
 @using UTrack
 @using UTrack.V1
+@using LP = TrackingPage.Resources.LVessels
+@using LM = TrackingPage.Resources.LModel
 @inject ApiClient Api
 
 @{
@@ -16,25 +18,25 @@
                         <MudSpacer />
                         @if (call.Stage == VesselCallStage.Waiting)
                         {
-                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning">На рейде</MudChip>
+                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning">@LP.AtAnchor</MudChip>
                         }
-                        @if (call.Stage == VesselCallStage.Processing && call.StartUnloadingTimestamp > DateTime.MinValue)
+                        @if (call.Stage == VesselCallStage.Handling && call.StartUnloadingTimestamp > DateTime.MinValue)
                         {
                             <MudChip 
                                 T="string" 
                                 Size="Size.Small"
                                 Variant="Variant.Outlined"
                                 Color="@(call.UnStats.IsUnloaded ? Color.Success : Color.Warning)">
-                                @(call.UnStats.IsUnloaded ? "Выгружен" : "Выгрузка")
+                                @(call.UnStats.IsUnloaded ? LP.Discharged_Vessel : LP.Discharging)
                              </MudChip>
                         }
-                        @if (call.Stage == VesselCallStage.Processing && call.StartLoadingTimestamp > DateTime.MinValue)
+                        @if (call.Stage == VesselCallStage.Handling && call.StartLoadingTimestamp > DateTime.MinValue)
                         {
                             <MudChip T="string"
                                      Size="Size.Small"
                                      Variant="Variant.Outlined"
                                      Color="Color.Warning">
-                                Погрузка
+                                @LP.Loading
                             </MudChip>
                         }
                     </div>
@@ -59,58 +61,58 @@
                 
                 <MudDivider Class="mb-3" />
 
-                @* Тело карточки (Даты) *@
+                @* Тело карточки *@
                 <MudStack Spacing="1" Class="flex-grow-1">
                     @if (call.Stage == VesselCallStage.Expected || call.Stage == VesselCallStage.Waiting)
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.caption">Ожидается:</MudText>
-                            <MudText Typo="Typo.caption">@call.DeclaredTimestamp.ToStringOrEmpty("dd.MM.yyyy")</MudText>
+                            <MudText Typo="Typo.caption">@LP.Expected:</MudText>
+                            <MudText Typo="Typo.caption">@call.DeclaredTimestamp.ToStringOrEmpty(LM.DateFormat)</MudText>
                         </div>
                     }
                     @if (call.Stage == VesselCallStage.Waiting)
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.caption">На рейде с:</MudText>
-                            <MudText Typo="Typo.caption">@call.StartWaitingTimestamp.ToStringOrEmpty()</MudText>
+                            <MudText Typo="Typo.caption">@LP.AtAnchorSince:</MudText>
+                            <MudText Typo="Typo.caption">@call.StartWaitingTimestamp.ToStringOrEmpty(LM.DateTimeFormat)</MudText>
                         </div>
                     }
-                    @if (call.Stage == VesselCallStage.Processing && call.Berth is not null)
+                    @if (call.Stage == VesselCallStage.Handling && call.Berth is not null)
                     {
                         <div class="d-flex justify-space-between">
                             <MudText Typo="Typo.caption">@call.Berth.TerminalTitle:</MudText>
                             <MudText Typo="Typo.body2">@call.Berth.Title</MudText>
                         </div>
                     }
-                    @if (call.Stage == VesselCallStage.Processing && call.StartUnloadingTimestamp > DateTime.MinValue)
+                    @if (call.Stage == VesselCallStage.Handling && call.StartUnloadingTimestamp > DateTime.MinValue)
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.caption">Начало выгрузки:</MudText>
-                            <MudText Typo="Typo.caption">@call.StartUnloadingTimestamp.ToStringOrEmpty()</MudText>
+                            <MudText Typo="Typo.caption">@LP.DischargeStart:</MudText>
+                            <MudText Typo="Typo.caption">@call.StartUnloadingTimestamp.ToStringOrEmpty(LM.DateTimeFormat)</MudText>
                         </div>
                     }
-                    @if (call.Stage == VesselCallStage.Processing && call.StartLoadingTimestamp > DateTime.MinValue)
+                    @if (call.Stage == VesselCallStage.Handling && call.StartLoadingTimestamp > DateTime.MinValue)
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.caption">Начало погрузки:</MudText>
-                            <MudText Typo="Typo.caption">@call.StartLoadingTimestamp.ToStringOrEmpty()</MudText>
+                            <MudText Typo="Typo.caption">@LP.LoadStart:</MudText>
+                            <MudText Typo="Typo.caption">@call.StartLoadingTimestamp.ToStringOrEmpty(LM.DateTimeFormat)</MudText>
                         </div>
                     }
                     @if (call.DepartureTimestamp > DateTime.MinValue)
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.caption">Отход:</MudText>
-                            <MudText Typo="Typo.caption">@call.DepartureTimestamp.ToStringOrEmpty()</MudText>
+                            <MudText Typo="Typo.caption">@LP.Departure:</MudText>
+                            <MudText Typo="Typo.caption">@call.DepartureTimestamp.ToStringOrEmpty(LM.DateTimeFormat)</MudText>
                         </div>
                     }                    
                 </MudStack>
 
-                @* Прогресс выгрузки (только для обработки) *@
+                @* Прогресс выгрузки *@
                 @if (Processing.Contains(call) && @call.UnStats.TotalPercent > 0)
                 {
                     <div class="mt-4">
                         <div class="d-flex justify-space-between mb-1">
-                            <MudText Typo="Typo.caption">Выгружено</MudText>
+                            <MudText Typo="Typo.caption">@LP.Discharged_Cargo</MudText>
                             <MudText Typo="Typo.caption">@call.UnStats.TotalPercent %</MudText>
                         </div>
                         <MudProgressLinear Color="Color.Info" Value="@call.UnStats.TotalPercent" Class="mud-width-full" />
@@ -145,7 +147,7 @@
             <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" NoIcon="true" Class="my-2">
                 <div class="d-flex align-center gap-2">
                     <MudIcon Icon="@Icons.Material.Filled.Sync" Color="Color.Inherit" />
-                    <MudText>В обработке:</MudText>
+                    <MudText>@LP.Section_Handling:</MudText>
                 </div>
             </MudAlert>
             <MudGrid Spacing="3">
@@ -163,7 +165,7 @@
             <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" NoIcon="true" Class="my-2">
                 <div class="d-flex align-center gap-2">
                     <MudIcon Icon="@Icons.Material.Filled.EditCalendar" Color="Color.Inherit" />
-                    <MudText>Ожидаются:</MudText>
+                    <MudText>@LP.Section_Expacted:</MudText>
                 </div>
             </MudAlert>
             <MudGrid Spacing="3">
@@ -181,7 +183,7 @@
             <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" NoIcon="true" Class="my-2">
                 <div class="d-flex align-center gap-2">
                     <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Inherit" />
-                    <MudText>Завершены:</MudText>
+                    <MudText>@LP.Section_Done:</MudText>
                 </div>
             </MudAlert>
             <MudGrid Spacing="3">
@@ -211,7 +213,7 @@
 
     // Категории
     private IEnumerable<VesselCall> Processing => VesselCalls.Where(v =>
-        (v.Stage == VesselCallStage.Processing));
+        (v.Stage == VesselCallStage.Handling));
 
     private IEnumerable<VesselCall> Departured => VesselCalls.Where(v =>
         v.Stage == VesselCallStage.Departured);

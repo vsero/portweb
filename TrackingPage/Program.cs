@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
-using MudBlazor;
 using MudBlazor.Services;
 using System.Globalization;
 using System.Text.Json;
@@ -13,7 +12,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl2"]
+var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"]
                  ?? "https://kmtp.info/upapi/hs/utrackv1/";
 
 var xApiKey = builder.Configuration["ApiSettings:XApiKey"] ?? string.Empty;

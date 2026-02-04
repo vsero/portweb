@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.Extensions.Localization
 @using MudBlazor.Services
 @using System.Text.Json
+@using LP = TrackingPage.Resources.LMainLayout
 @inject IBrowserViewportService ViewportService
 @inject IJSRuntime JS
 @inject NavigationManager Nav
@@ -12,22 +14,22 @@
 
 <MudLayout>
 
-    @* Виден только на широких экранах (ПК) *@
+    @* Широкий экран *@
    <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudAppBar>
-            <MudText Typo="Typo.h6">Tracking</MudText>
+            <MudText Typo="Typo.h6">@LP.AppBarTitle</MudText>
             <MudSpacer />
             @LanguageSelectMenu
         </MudAppBar>
         <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
             <MudNavMenu>
-                <MudNavLink href="tracking" Icon="@Icons.Material.Filled.Search">Трекинг</MudNavLink>
-                <MudNavLink href="vessels" Icon="@Icons.Material.Filled.DirectionsBoat">Суда</MudNavLink>
+                <MudNavLink href="tracking" Icon="@Icons.Material.Filled.Search">@LP.PageTracking</MudNavLink>
+                <MudNavLink href="vessels" Icon="@Icons.Material.Filled.DirectionsBoat">@LP.PageVessels</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
     </MudHidden>
 
-    @* Виден только на узких экранах (Мобилки/Telegram) *@
+    @* Узкий экран *@
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudAppBar Bottom="true" Fixed="true">
             <MudSpacer />

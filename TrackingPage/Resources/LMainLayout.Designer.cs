@@ -22,14 +22,14 @@ namespace TrackingPage.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class LTracking {
+    public class LMainLayout {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LTracking() {
+        internal LMainLayout() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TrackingPage.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TrackingPage.Resources.LTracking", typeof(LTracking).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TrackingPage.Resources.LMainLayout", typeof(LMainLayout).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,29 @@ namespace TrackingPage.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Expande.
+        ///   Ищет локализованную строку, похожую на Korsakov Sea Commercial Port.
         /// </summary>
-        public static string Expand {
+        public static string AppBarTitle {
             get {
-                return ResourceManager.GetString("Expand", resourceCulture);
+                return ResourceManager.GetString("AppBarTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hide.
+        ///   Ищет локализованную строку, похожую на Tracking.
         /// </summary>
-        public static string Hide {
+        public static string PageTracking {
             get {
-                return ResourceManager.GetString("Hide", resourceCulture);
+                return ResourceManager.GetString("PageTracking", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Container No, Label, BL number.
+        ///   Ищет локализованную строку, похожую на Vessels.
         /// </summary>
-        public static string Label_Search {
+        public static string PageVessels {
             get {
-                return ResourceManager.GetString("Label_Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Search.
-        /// </summary>
-        public static string Search {
-            get {
-                return ResourceManager.GetString("Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Shipment tracking.
-        /// </summary>
-        public static string ShipmentTracking {
-            get {
-                return ResourceManager.GetString("ShipmentTracking", resourceCulture);
+                return ResourceManager.GetString("PageVessels", resourceCulture);
             }
         }
     }

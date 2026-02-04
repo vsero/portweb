@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\LMainLayout.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LMainLayout.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\LModel.Designer.cs">
       <DependentUpon>LModel.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -31,6 +36,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>LTracking.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\LVessels.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LVessels.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -44,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\LMainLayout.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LMainLayout.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\LModel.resx">
       <LastGenOutput>LModel.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -51,6 +65,10 @@
     <EmbeddedResource Update="Resources\LTracking.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LTracking.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\LVessels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LVessels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

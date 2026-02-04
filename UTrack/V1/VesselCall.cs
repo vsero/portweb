@@ -44,8 +44,8 @@ public class VesselCall
         return this switch
         {
             { DepartureTimestamp.Year: > 1 } => VesselCallStage.Departured,
-            { StartLoadingTimestamp.Year: > 1 } => VesselCallStage.Processing,
-            { StartUnloadingTimestamp.Year: > 1 } => VesselCallStage.Processing,
+            { StartLoadingTimestamp.Year: > 1 } => VesselCallStage.Handling,
+            { StartUnloadingTimestamp.Year: > 1 } => VesselCallStage.Handling,
             { StartWaitingTimestamp.Year: > 1 } => VesselCallStage.Waiting,
             _ => VesselCallStage.Expected
         };
@@ -72,7 +72,7 @@ public class VesselCall
         public int GenPercent;
         public int TotalPercent;
         public bool IsUnloaded;
-        public VesselProcessingStatus Status = VesselProcessingStatus.None;
+        public VesselHandlingStatus Status = VesselHandlingStatus.None;
 
         public UnloadingStats(VesselCall call)
         {
@@ -95,10 +95,10 @@ public class VesselCall
 
             Status = this switch
             {
-                { IsoPercent: 100 } when GenPercent == 100 => VesselProcessingStatus.Done,
-                { IsoHandled: > 0 } or { GenHandled: > 0 } => VesselProcessingStatus.InProgress,
-                { IsoDeclared: > 0 } or { GenDeclared: > 0 } => VesselProcessingStatus.Expected,
-                _ => VesselProcessingStatus.None
+                { IsoPercent: 100 } when GenPercent == 100 => VesselHandlingStatus.Done,
+                { IsoHandled: > 0 } or { GenHandled: > 0 } => VesselHandlingStatus.InProgress,
+                { IsoDeclared: > 0 } or { GenDeclared: > 0 } => VesselHandlingStatus.Expected,
+                _ => VesselHandlingStatus.None
             };
 
         }
@@ -122,11 +122,11 @@ public enum VesselCallStage
 {
     Expected,
     Waiting,
-    Processing,
+    Handling,
     Departured
 }
 
-public enum VesselProcessingStatus
+public enum VesselHandlingStatus
 {
     None,
     Expected,

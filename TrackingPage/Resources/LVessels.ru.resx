@@ -117,19 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="AtAnchor" xml:space="preserve">
+    <value>На рейде</value>
   </data>
-  <data name="ShipmentTracking" xml:space="preserve">
-    <value>Shipment tracking</value>
+  <data name="Discharged_Vessel" xml:space="preserve">
+    <value>Выгружен</value>
   </data>
-  <data name="Label_Search" xml:space="preserve">
-    <value>Container No, Label, BL number</value>
+  <data name="Discharging" xml:space="preserve">
+    <value>Выгрузка</value>
   </data>
-  <data name="Hide" xml:space="preserve">
-    <value>Hide</value>
+  <data name="Loading" xml:space="preserve">
+    <value>Погрузка</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>Expande</value>
+  <data name="Expected" xml:space="preserve">
+    <value>Ожидается</value>
+  </data>
+  <data name="AtAnchorSince" xml:space="preserve">
+    <value>На рейде с</value>
+  </data>
+  <data name="DischargeStart" xml:space="preserve">
+    <value>Начало выгрузки</value>
+  </data>
+  <data name="LoadStart" xml:space="preserve">
+    <value>Начало погрузки</value>
+  </data>
+  <data name="Departure" xml:space="preserve">
+    <value>Оотход</value>
+  </data>
+  <data name="Discharged_Cargo" xml:space="preserve">
+    <value>Выгружено</value>
+  </data>
+  <data name="Section_Handling" xml:space="preserve">
+    <value>В обработке</value>
+  </data>
+  <data name="Section_Expacted" xml:space="preserve">
+    <value>Ожидаются</value>
+  </data>
+  <data name="Section_Done" xml:space="preserve">
+    <value>Завершены</value>
   </data>
 </root>
