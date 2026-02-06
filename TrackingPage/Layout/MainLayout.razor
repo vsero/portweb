@@ -97,7 +97,8 @@
         if (UserContext.Culture != culture)
         {
             await JS.InvokeVoidAsync("localStorage.setItem", "selectedCulture", culture);
-            Nav.NavigateTo(Nav.Uri, forceLoad: true);
+            // Nav.NavigateTo(Nav.Uri, forceLoad: true);
+            await JS.InvokeVoidAsync("location.reload");
         }
     }
 
