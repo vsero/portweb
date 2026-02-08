@@ -80,10 +80,6 @@
         {
             await SetupUserContext();
             StateHasChanged();
-            await JS.InvokeVoidAsync("console.log", "Culture:", UserContext.Culture);
-            await JS.InvokeVoidAsync("console.log", "IsTg:", UserContext.IsTg);
-            await JS.InvokeVoidAsync("console.log", "UserId:", UserContext.TgUser.Id);
-            await JS.InvokeVoidAsync("console.log", "UserName:", UserContext.TgUser.Username);
         }
     }
 

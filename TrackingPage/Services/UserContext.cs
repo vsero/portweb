@@ -72,7 +72,7 @@ public class UserContext
         Culture = culture;
     }
 
-    public TgUser TgUser { get; set; } = new();
+    public TgUser? TgUser { get; set; }
 
     private void NotifyChanged() => OnChange?.Invoke();
 

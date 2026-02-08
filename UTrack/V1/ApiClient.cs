@@ -69,12 +69,13 @@ public class ApiClient(HttpClient httpClient, string xApiKey)
     }
 
 
-    public async Task<(IEnumerable<CargoShipment>? cargoShipments, string error)> NotifyShipmentGET(TgUser tgUser, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<CargoShipment>? cargoShipments, string error)> NotifyShipmentGET(TgUser tgUser,  CancellationToken cancellationToken = default)
     {
         try
         {
             var xTguser = JsonSerializer.Serialize(tgUser, _jsonOptions);
             using var request = new HttpRequestMessage(HttpMethod.Get, $"notify/shipment");
+            request.Headers.Add("x-api-key", xApiKey);
             request.Headers.Add("x-tguser", xTguser);
             using var response = await httpClient.SendAsync(request, cancellationToken);
             if (response.StatusCode == HttpStatusCode.OK)

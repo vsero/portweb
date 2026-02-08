@@ -77,10 +77,7 @@
 
     </MudPaper>
 
-    @if (!string.IsNullOrEmpty(_errorMessage))
-    {
-        <MudAlert Severity="Severity.Error" Class="mt-4">@_errorMessage</MudAlert>
-    }
+    <ErrorAlertBar ErrorMessage="@_errorMessage" />
 
     <ShipmentCard Shipment="_shipment" IsExpandable="false" />
 

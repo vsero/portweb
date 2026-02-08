@@ -148,28 +148,27 @@
 
     RenderFragment EventCard(CargoHandlingEvent handlingEvent) =>
     @<MudGrid Spacing="2">
-    <MudItem xs="8">
-        <MudText Typo="Typo.h6" Class="mt-n1">@LMs[handlingEvent.Type.ToString()]</MudText>
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-            <MudIcon Icon="@HandlingEventIcon(handlingEvent)" Color="Color.Primary" />
-            <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                @handlingEvent.Location.Title
-            </MudText>
-        </MudStack>
-    </MudItem>
-    <MudItem xs="4">
-        <MudStack AlignItems="AlignItems.End" Spacing="0" Class="mt-1">
-            <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.FlexEnd" Spacing="2">
-                <MudText Typo="Typo.body2">@($"{handlingEvent.Timestamp.ToStringOrEmpty(LM.DateFormat)}")</MudText>
-                <MudText Typo="Typo.body2"> @($"{handlingEvent.Timestamp.ToStringOrEmpty(LM.TimeFormat)}")</MudText>
+        <MudItem xs="8">
+            <MudText Typo="Typo.h6" Class="mt-n1">@LMs[handlingEvent.Type.ToString()]</MudText>
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <MudIcon Icon="@HandlingEventIcon(handlingEvent)" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                    @handlingEvent.Location.Title
+                </MudText>
             </MudStack>
-            <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                @($"{LM.Qty}: {handlingEvent.Quantity}")
-            </MudText>
-        </MudStack>
-    </MudItem>
-</MudGrid>
-    ;
+        </MudItem>
+        <MudItem xs="4">
+            <MudStack AlignItems="AlignItems.End" Spacing="0" Class="mt-1">
+                <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.FlexEnd" Spacing="2">
+                    <MudText Typo="Typo.body2">@($"{handlingEvent.Timestamp.ToStringOrEmpty(LM.DateFormat)}")</MudText>
+                    <MudText Typo="Typo.body2"> @($"{handlingEvent.Timestamp.ToStringOrEmpty(LM.TimeFormat)}")</MudText>
+                </MudStack>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                    @($"{LM.Qty}: {handlingEvent.Quantity}")
+                </MudText>
+            </MudStack>
+        </MudItem>
+    </MudGrid>;
 
 
 

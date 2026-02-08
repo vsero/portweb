@@ -1,0 +1,13 @@
+﻿
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <MudAlert Severity="Severity.Error" Class="mt-4">@ErrorMessage</MudAlert>
+}
+
+
+
+@code {
+
+    [Parameter] public string ErrorMessage { get; set; } = string.Empty;
+
+}

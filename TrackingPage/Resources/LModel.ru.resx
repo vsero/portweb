@@ -139,7 +139,7 @@
     <value>Кол-во</value>
   </data>
   <data name="Declared" xml:space="preserve">
-    <value>Зарегистрирован</value>
+    <value>Рег. дата</value>
   </data>
   <data name="Laden" xml:space="preserve">
     <value>Груженый</value>
