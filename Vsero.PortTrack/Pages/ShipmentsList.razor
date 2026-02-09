@@ -15,7 +15,7 @@
     <MudStack Spacing="1">
         @foreach (var shipment in _shipments)
         {
-            <ShipmentCard Shipment="shipment" IsExpandable="true">
+            <ShipmentCard @key="shipment" Shipment="shipment" IsExpandable="true">
                 <CardActions>
                     <MudSpacer />
                     <ShipmentCardButton OnClick="@(() => ShipmentCard_Delete(shipment))" Kind="ShipmentCardButton.ButtonKind.Delete" />
@@ -77,10 +77,7 @@
         }
 
         if (_shipments.Contains(shipment))
-        {
             _shipments.Remove(shipment);
-            StateHasChanged();
-        }
     }
 
 }
