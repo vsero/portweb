@@ -1,9 +1,13 @@
 ﻿@page "/vessels"
+@using Vsero.PortTrack.Components
 @using Vsero.UTrcak
 @using Vsero.UTrcak.V1
 @using LP = Vsero.PortTrack.Resources.LVessels
 @using LM = Vsero.PortTrack.Resources.LModel
 @inject ApiClient Api
+@inherits PortTrackComponentBase
+
+
 
 @{
     RenderFragment<VesselCall> VesselCard = (call) => __builder =>
@@ -124,13 +128,8 @@
 }
 
 
-@if (_isLoading)
-{
-    <div class="d-flex justify-center align-center" style="height: 80vh;">
-        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
-    </div>
-}
 
+<PageLoading IsLoading="@_isLoading" />
 
 @if (!string.IsNullOrEmpty(_errorMessage))
 {
@@ -202,14 +201,33 @@
 
     private bool _isLoading;
     private string _errorMessage = string.Empty;
-    private CancellationTokenSource? _cts;
     private List<VesselCall> VesselCalls { get; set; } = new();
 
     protected override Task OnInitializedAsync()
     {
         _ = GetVesselCalls();
-         return base.OnInitializedAsync();
+        return base.OnInitializedAsync();
     }
+
+
+
+    private async Task GetVesselCalls()
+    {
+        _isLoading = true;
+        _errorMessage = string.Empty;
+        VesselCalls.Clear();
+
+        var ct = CancellationToken();
+        (IEnumerable<VesselCall>? vesselCalls, _errorMessage) = await Api.VesselCallListAsync(ct);
+
+        _isLoading = false;
+        if (vesselCalls is null) return;
+        VesselCalls = vesselCalls.ToList();
+        StateHasChanged();
+
+    }
+
+
 
     // Категории
     private IEnumerable<VesselCall> Processing => VesselCalls.Where(v =>
@@ -223,31 +241,5 @@
 
     private IEnumerable<VesselCall> Expected => VesselCalls.Where(v =>
         v.Stage == VesselCallStage.Expected);
-
-
-    private async Task GetVesselCalls()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
-
-        _cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        _isLoading = true;
-        _errorMessage = string.Empty;
-        VesselCalls.Clear();
-
-        (IEnumerable<VesselCall>? vesselCalls, _errorMessage) = await Api.VesselCallListAsync(_cts.Token);
-
-        _isLoading = false;
-        if (vesselCalls is null) return;
-        VesselCalls = vesselCalls.ToList();
-        StateHasChanged();
-
-    }
-
-    public void Dispose()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
-    }
 
 }

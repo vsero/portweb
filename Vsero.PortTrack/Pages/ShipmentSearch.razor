@@ -1,15 +1,16 @@
 ﻿@page "/"
-@page "/tracking"
+@page "/shipmentSearch"
 @using Microsoft.Extensions.Localization
+@using Vsero.PortTrack.Components
 @using Vsero.UTrcak
 @using Vsero.UTrcak.V1
-@using Vsero.PortTrack.Components
 @using LM = Vsero.PortTrack.Resources.LModel
 @using LP = Vsero.PortTrack.Resources.LTracking
 @inject ApiClient Api
 @inject UserContext UserContext
 @inject IBrowserViewportService ViewportService
 @inject IStringLocalizer<Vsero.PortTrack.Resources.LModel> LMs
+@inherits PortTrackComponentBase
 
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-5 mb-5">
@@ -92,22 +93,18 @@
     private string? _errorMessage;
     private CargoSearchFilter _filter = new();
     private CargoShipment? _shipment;
-    private CancellationTokenSource? _cts;
+
 
 
     private async Task HandleSearch()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
-
         if (string.IsNullOrWhiteSpace(_filter.SearchString)) return;
 
-        _cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         _isLoading = true;
         _errorMessage = null;
         _shipment = null;
 
-        (CargoShipment? shipment, string error) = await Api.ShipmentSearchAsync(_filter, _cts.Token);
+        (CargoShipment? shipment, string error) = await Api.ShipmentSearchAsync(_filter, CancellationToken());
 
         _isLoading = false;
         _shipment = shipment;
@@ -115,13 +112,6 @@
         if (_shipment is null)
             _errorMessage = string.IsNullOrWhiteSpace(error) ? "Груз не найден" : error;
 
-    }
-
-
-    public void Dispose()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
     }
 
 }

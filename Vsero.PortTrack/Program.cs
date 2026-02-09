@@ -13,14 +13,14 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl2"]
-                 ?? "https://kmtp.info/upapi/hs/Vsero.UTrcakv1/";
+                 ?? "https://kmtp.info/upapi/hs/UTrcakv1/";
 
 var xApiKey = builder.Configuration["ApiSettings:XApiKey"] ?? string.Empty;
 
 builder.Services.AddScoped(sp => new HttpClient
 {
     BaseAddress = new Uri(apiBaseUrl),
-    Timeout = TimeSpan.FromSeconds(30)
+    Timeout = TimeSpan.FromSeconds(10)
 });
 
 builder.Services.AddScoped(sp => 

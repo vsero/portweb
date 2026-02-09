@@ -3,17 +3,20 @@
 @using Vsero.UTrcak.V1
 @inject ApiClient Api
 @inject UserContext UserContext
+@inherits PortTrackComponentBase
+
 
 
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="pa-4">
 
+    <PageLoading IsLoading="@_isLoading" />
     <ErrorAlertBar ErrorMessage="@_errorMessage" />
 
     <MudStack Spacing="1">
         @foreach (var shipment in _shipments)
         {
-            <ShipmentCard Shipment="shipment" IsExpandable="true" />
+            <ShipmentCard Shipment="shipment" IsExpandable="true" OnDelete="DeleteShipment"/>
         }
     </MudStack>
 
@@ -26,7 +29,6 @@
 
     private bool _isLoading;
     private string _errorMessage = string.Empty;
-    private CancellationTokenSource? _cts;
     private List<CargoShipment> _shipments = [];
 
 
@@ -41,28 +43,15 @@
 
     private async Task GetShipments()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
-
-        _cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         _isLoading = true;
         _errorMessage = string.Empty;
         _shipments.Clear();
 
         IEnumerable<CargoShipment>? cargoShipments = null;
-        // Vsero.UTrcak.TgUser? apiTguser = UserContext.TgUser?.ToApiModel();
-
-        Vsero.UTrcak.TgUser? apiTguser = new()
-        {
-            Id = 412798134,
-            Username = "VitalySerokurov",
-            FirstName = "Vitaly"
-        };
-
-
+        var apiTguser = ApiTguser();
         if (apiTguser is not null)
         {
-            (cargoShipments, _errorMessage) = await Api.NotifyShipmentGET(apiTguser, _cts.Token);
+            (cargoShipments, _errorMessage) = await Api.NotifyShipmentGetAsync(apiTguser, CancellationToken());
         }
 
         if (cargoShipments is not null)
@@ -70,15 +59,34 @@
 
         _isLoading = false;
         StateHasChanged();
-
     }
 
 
 
-    public void Dispose()
+    private async Task DeleteShipment(CargoShipment shipment)
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
+
+        var apiTguser = ApiTguser();
+        if (apiTguser is not null)
+        {
+            // (cargoShipments, _errorMessage) = await Api.NotifyShipmentGET(apiTguser, CancellationToken());
+        }
+
     }
+
+
+
+    private Vsero.UTrcak.TgUser? ApiTguser()
+    {
+        return new()
+            {
+                Id = 412798134,
+                Username = "VitalySerokurov",
+                FirstName = "Vitaly"
+            };
+
+        //return UserContext.TgUser?.ToApiModel();
+    }
+
 
 }

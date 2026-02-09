@@ -111,6 +111,16 @@
                 </MudHidden>
 
             </MudCardContent>
+
+            <MudCardActions>
+                <MudSpacer />
+                <MudButton OnClick="DeleteShipment" 
+                            Variant="Variant.Text"
+                            Size="Size.Large"
+                            Color="Color.Secondary"
+                            StartIcon="@Icons.Material.Outlined.Delete">DELETE</MudButton>
+            </MudCardActions>
+
         </MudCollapse>
     </MudCard>
 }
@@ -121,6 +131,7 @@
 
     [Parameter] public CargoShipment? Shipment { get; set; }
     [Parameter] public bool IsExpandable { get; set; }
+    [Parameter] public EventCallback<CargoShipment> OnDelete { get; set; }
 
     private IEnumerable<CargoHandlingEvent> _visibleEvents = [];
     private int _eventsCount = 0;
@@ -134,10 +145,10 @@
 
     RenderFragment ShipmentPropery(string label, string value) =>
     @<text>
-        <MudItem xs="4" sm="3">
+        <MudItem xs="5">
             <MudText Typo="Typo.body1">@label:</MudText>
         </MudItem>
-        <MudItem xs="8" sm="9">
+        <MudItem xs="7">
             <MudText Typo="Typo.body1" Class="ff-mono">
                 <b>@value</b>
             </MudText>
@@ -168,7 +179,8 @@
                 </MudText>
             </MudStack>
         </MudItem>
-    </MudGrid>;
+    </MudGrid>
+    ;
 
 
 
@@ -196,6 +208,13 @@
     {
         _eventsExpanded = !_eventsExpanded;
         SetShipmentVariables();
+    }
+
+
+
+    private void DeleteShipment()
+    {
+        OnDelete.InvokeAsync(Shipment);
     }
 
 
