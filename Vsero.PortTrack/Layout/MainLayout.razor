@@ -23,12 +23,12 @@
         </MudAppBar>
         <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
             <MudNavMenu>
-                <MudNavLink href="shipmentSearch" Icon="@Icons.Material.Filled.Search">@LP.PageShipmentSearch</MudNavLink>
+                <MudNavLink href="shipmentSearch" Icon="@_iconPage_shipmentSearch">@LP.PageShipmentSearch</MudNavLink>
                 @if (UserContext.IsTg)
                 {
                     <MudNavLink href="shipmentsList" Icon="@Icons.Material.Filled.ListAlt">@LP.PageShipmentList</MudNavLink>
                 }
-                <MudNavLink href="vessels" Icon="@Icons.Material.Filled.DirectionsBoat">@LP.PageVessels</MudNavLink>
+                <MudNavLink href="vessels" Icon="@_iconPage_vessels">@LP.PageVessels</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
     </MudHidden>
@@ -37,14 +37,14 @@
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudAppBar Bottom="true" Fixed="true">
             <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.Search" href="shipmentSearch" />
+            <MudIconButton Icon="@_iconPage_shipmentSearch" href="shipmentSearch" />
             @if (UserContext.IsTg)
             {
                 <MudSpacer />
-                <MudIconButton Icon="@Icons.Material.Filled.Search" href="shipmentList" />
+                <MudIconButton Icon="@_iconPage_shipmentList" href="shipmentList" />
             }
             <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.DirectionsBoat" href="vessels" />
+            <MudIconButton Icon="@_iconPage_vessels" href="vessels" />
             <MudSpacer />
             @LanguageSelectMenu
             <MudSpacer />
@@ -58,6 +58,12 @@
 </MudLayout>
 
 @code {
+
+
+    private string _iconPage_shipmentSearch = Icons.Material.Filled.Search;
+    private string _iconPage_shipmentList = Icons.Material.Filled.ListAlt;
+    private string _iconPage_vessels = Icons.Material.Filled.DirectionsBoat;
+
 
     #region RenderFragments
 
