@@ -20,7 +20,7 @@ public class ApiClient(HttpClient httpClient, string xApiKey)
 
     public async Task<(IEnumerable<CargoShipment>? cargoShipments, string error)> NotifyShipmentGetAsync(TgUser tgUser, CancellationToken ct = default)
     {
-        using var request = NewApiRequest(HttpMethod.Get, $"notify/shipment")
+        using var request = NewApiRequest(HttpMethod.Get, "notify/shipment")
             .WithHeaderXtguser(tgUser);
 
         (var items, string _er) = await ExecuteAndReadContentAsync<IEnumerable<CargoShipment>>(request, ct);
@@ -29,12 +29,21 @@ public class ApiClient(HttpClient httpClient, string xApiKey)
 
 
 
+    public async Task<(bool result, string error)> NotifyShipmentPostAsync(TgUser tgUser, CargoShipment shipment, CancellationToken ct = default)
+    {
+        using var request = NewApiRequest(HttpMethod.Post, $"notify/shipment/{shipment.Uuid.ToString()}")
+            .WithHeaderXtguser(tgUser);
+
+        (var response, string _er) = await ExecuteRequestAsync(request, ct);
+        return (response?.IsSuccessStatusCode ?? false, _er);
+    }
+
+
+
     public async Task<(bool result, string error)> NotifyShipmentDeleteAsync(TgUser tgUser, CargoShipment shipment, CancellationToken ct = default)
     {
-        var body = new[] { shipment.Uuid.ToString() };
-        using var request = NewApiRequest(HttpMethod.Delete, $"notify/shipment")
-            .WithHeaderXtguser(tgUser)
-            .WithContent(body);
+        using var request = NewApiRequest(HttpMethod.Delete, $"notify/shipment/{shipment.Uuid.ToString()}")
+            .WithHeaderXtguser(tgUser);
 
         (var response, string _er) = await ExecuteRequestAsync(request, ct);
         return (response?.IsSuccessStatusCode ?? false, _er);
@@ -68,11 +77,10 @@ public class ApiClient(HttpClient httpClient, string xApiKey)
         };
 
         var queryString = await new FormUrlEncodedContent(queryParams).ReadAsStringAsync();
-
         var body = new[] { filter.SearchString };
-
-        var request = NewApiRequest(HttpMethod.Post, $"shipment/search?{queryString}");
-        request.Content = JsonContent.Create(body);
+        var request = NewApiRequest(HttpMethod.Post, $"shipment/search?{queryString}")
+            .WithContent(body);
+        
         return request;
     }
 

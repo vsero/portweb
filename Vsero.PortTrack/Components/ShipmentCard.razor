@@ -3,6 +3,9 @@
 @using LM = Vsero.PortTrack.Resources.LModel
 @using LP = Vsero.PortTrack.Resources.LTracking
 @inject IStringLocalizer<Vsero.PortTrack.Resources.LModel> LMs
+@inject ApiClient Api
+@inject UserContext UserContext
+@inherits PortTrackComponentBase
 
 
 @if (Shipment is not null)
@@ -114,14 +117,28 @@
 
             <MudCardActions>
                 <MudSpacer />
+                @* @if (_shipmentIsDeleted)
+                { *@
+                <MudButton OnClick="AddShipment"
+                           Variant="Variant.Text"
+                           Size="Size.Large"
+                           Color="Color.Success"
+                           StartIcon="@Icons.Material.Outlined.AddAlert">ADD</MudButton>
+               @*  }
+                else
+                { *@
                 <MudButton OnClick="DeleteShipment" 
                             Variant="Variant.Text"
                             Size="Size.Large"
                             Color="Color.Secondary"
                             StartIcon="@Icons.Material.Outlined.Delete">DELETE</MudButton>
+                @* } *@
             </MudCardActions>
 
         </MudCollapse>
+
+        <ErrorAlertBar ErrorMessage="@_errorMessage" />
+
     </MudCard>
 }
 
@@ -131,6 +148,7 @@
 
     [Parameter] public CargoShipment? Shipment { get; set; }
     [Parameter] public bool IsExpandable { get; set; }
+    [Parameter] public EventCallback<CargoShipment> OnAdd { get; set; }
     [Parameter] public EventCallback<CargoShipment> OnDelete { get; set; }
 
     private IEnumerable<CargoHandlingEvent> _visibleEvents = [];
@@ -139,6 +157,8 @@
     private bool _eventsExpanded;
     private bool _cardExpanded;
     private bool _cardIsExpandable;
+    private bool _shipmentIsDeleted = false;
+    private string _errorMessage = String.Empty;
     private CargoHandlingEvent? _lastEvent;
 
 
@@ -184,7 +204,6 @@
 
 
 
-
     protected override void OnParametersSet()
     {
         _cardIsExpandable = IsExpandable;
@@ -212,9 +231,40 @@
 
 
 
-    private void DeleteShipment()
+    private async Task AddShipment()
     {
-        OnDelete.InvokeAsync(Shipment);
+        bool _result = false;
+        var apiTguser = ApiTguser();
+        if (apiTguser is not null && Shipment is not null)
+        {
+            (_result, _errorMessage) = await Api.NotifyShipmentPostAsync(apiTguser, Shipment, CancellationToken());
+        }
+
+        if (_result)
+        {
+            _shipmentIsDeleted = !_shipmentIsDeleted;
+            await OnAdd.InvokeAsync(Shipment);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+
+    private async Task DeleteShipment()
+    {
+        bool _result = false;
+        var apiTguser = ApiTguser();
+        if (apiTguser is not null && Shipment is not null)
+        {
+            (_result, _errorMessage) = await Api.NotifyShipmentDeleteAsync(apiTguser, Shipment, CancellationToken());
+        }
+
+        if (_result)
+        {
+            _shipmentIsDeleted = !_shipmentIsDeleted;
+            await OnDelete.InvokeAsync(Shipment);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
 
@@ -258,6 +308,19 @@
             };
         }
         return Color.Default;
+    }
+
+
+    private Vsero.UTrcak.TgUser? ApiTguser()
+    {
+        return new()
+        {
+            Id = 412798134,
+            Username = "VitalySerokurov",
+            FirstName = "Vitaly"
+        };
+
+        //return UserContext.TgUser?.ToApiModel();
     }
 
 }
