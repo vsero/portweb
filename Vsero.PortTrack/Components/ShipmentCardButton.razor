@@ -5,7 +5,7 @@
            Variant="Variant.Text"
            Size="Size.Large"
            Color="@ButtonColor"
-           StartIcon="@Icons.Material.Outlined.AddAlert">@Label</MudButton>
+           StartIcon="@Icon">@Label</MudButton>
 
 @code {
 
@@ -20,6 +20,13 @@
         Delete
     }
 
+
+    private string Icon => Kind switch
+    {
+        ButtonKind.Add => Icons.Material.Outlined.AddAlert,
+        ButtonKind.Delete => Icons.Material.Outlined.Delete,
+        _=> string.Empty
+    };
 
 
     private string Label => Kind switch
