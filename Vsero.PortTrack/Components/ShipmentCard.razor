@@ -26,7 +26,14 @@
                             <MudText Typo="Typo.body1" Class="flex-grow-1 text-truncate" Style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
                                 @Shipment.Title
                             </MudText>
-                            <MudText Typo="Typo.subtitle1">@Shipment.VesselCallTitle</MudText>
+                            @if (String.IsNullOrEmpty(Shipment.VesselCallTitle))
+                            {
+                                <MudText Typo="Typo.subtitle1">@LM.FromLand</MudText>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.subtitle1">@Shipment.VesselCallTitle</MudText>
+                            }
                         </MudStack>
                     }
 
