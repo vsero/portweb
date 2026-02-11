@@ -201,4 +201,13 @@
   <data name="Unloaded" xml:space="preserve">
     <value>Unloaded</value>
   </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="Handling" xml:space="preserve">
+    <value>Handling</value>
+  </data>
+  <data name="Departured" xml:space="preserve">
+    <value>Departured</value>
+  </data>
 </root>

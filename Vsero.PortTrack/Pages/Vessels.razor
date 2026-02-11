@@ -1,10 +1,12 @@
 ﻿@page "/vessels"
+@using Microsoft.Extensions.Localization
 @using Vsero.PortTrack.Components
 @using Vsero.UTrcak
 @using Vsero.UTrcak.V1
 @using LP = Vsero.PortTrack.Resources.LVessels
 @using LM = Vsero.PortTrack.Resources.LModel
 @inject ApiClient Api
+@inject IStringLocalizer<Vsero.PortTrack.Resources.LModel> LMs
 @inherits PortTrackComponentBase
 
 
@@ -17,7 +19,7 @@
                 @* Заголовок карточки *@
                 <div class="mb-2">
                    <div class="d-flex align-center gap-1 flex-grow-1">
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">@call.Stage</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">@LMs[call.Stage.ToString()]</MudText>
                         <MudSpacer />
                         @if (call.Stage == VesselCallStage.Waiting)
                         {

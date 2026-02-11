@@ -124,6 +124,15 @@ namespace Vsero.PortTrack.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Departured.
+        /// </summary>
+        public static string Departured {
+            get {
+                return ResourceManager.GetString("Departured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Empty.
         /// </summary>
         public static string Empty {
@@ -183,6 +192,15 @@ namespace Vsero.PortTrack.Resources {
         public static string GateOut {
             get {
                 return ResourceManager.GetString("GateOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Handling.
+        /// </summary>
+        public static string Handling {
+            get {
+                return ResourceManager.GetString("Handling", resourceCulture);
             }
         }
         
@@ -291,6 +309,15 @@ namespace Vsero.PortTrack.Resources {
         public static string Vesselcall {
             get {
                 return ResourceManager.GetString("Vesselcall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Waiting.
+        /// </summary>
+        public static string Waiting {
+            get {
+                return ResourceManager.GetString("Waiting", resourceCulture);
             }
         }
         
