@@ -81,7 +81,7 @@
         _errorMessage = string.Empty;
         _shipments.Clear();
 
-        IEnumerable<CargoShipment>? cargoShipments = null;
+        CargoShipment[]? cargoShipments = null;
         var apiTguser = UserContext.ApiTguser();
         if (apiTguser is not null)
         {

@@ -14,7 +14,7 @@ public class CargoShipment
     public DateTime IsFinishedTimestamp { get; set; }
     public CargoFlow CargoFlow { get; set; } = CargoFlow.FromLand;
     public string VesselCallTitle { get; set; } = string.Empty;
-    public IEnumerable<CargoHandlingEvent> HandlingEvents { get; set; } = [];
+    public CargoHandlingEvent[] HandlingEvents { get; set; } = [];
 }
 
 //DLTU9018145

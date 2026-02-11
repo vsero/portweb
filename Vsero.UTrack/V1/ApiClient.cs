@@ -9,21 +9,21 @@ public class ApiClient(HttpClient httpClient, string xApiKey)
 {
 
 
-    public async Task<(IEnumerable<VesselCall>? vesselCalls, string error)> VesselCallListAsync(CancellationToken ct = default)
+    public async Task<(VesselCall[]? vesselCalls, string error)> VesselCallListAsync(CancellationToken ct = default)
     {
         var request = NewApiRequest(HttpMethod.Get, "vesselcall/list");
-        (var items, string _er) = await ExecuteAndReadContentAsync<IEnumerable<VesselCall>>(request, ct);
+        (var items, string _er) = await ExecuteAndReadContentAsync<VesselCall[]>(request, ct);
         return (items, _er);
     }
 
 
 
-    public async Task<(IEnumerable<CargoShipment>? cargoShipments, string error)> NotifyShipmentGetAsync(TgUser tgUser, CancellationToken ct = default)
+    public async Task<(CargoShipment[]? cargoShipments, string error)> NotifyShipmentGetAsync(TgUser tgUser, CancellationToken ct = default)
     {
         using var request = NewApiRequest(HttpMethod.Get, "notify/shipment")
             .WithHeaderXtguser(tgUser);
 
-        (var items, string _er) = await ExecuteAndReadContentAsync<IEnumerable<CargoShipment>>(request, ct);
+        (var items, string _er) = await ExecuteAndReadContentAsync<CargoShipment[]>(request, ct);
         return (items, _er);
     }
 

@@ -22,7 +22,7 @@ public class VesselCall
     public Yard? LoadingBerth { get; set; }
     public Port PortOfDeparture { get; set; } = new Port();
     public Port PortOfDestination { get; set; } = new Port();
-    public List<HandlingTotal> HandlingTotals { get; set; } = [];
+    public HandlingTotal[] HandlingTotals { get; set; } = [];
 
 
     [JsonIgnore]

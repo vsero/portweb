@@ -228,7 +228,7 @@
         VesselCalls.Clear();
 
         var ct = CancellationToken();
-        (IEnumerable<VesselCall>? vesselCalls, _errorMessage) = await Api.VesselCallListAsync(ct);
+        (VesselCall[]? vesselCalls, _errorMessage) = await Api.VesselCallListAsync(ct);
 
         _isLoading = false;
         if (vesselCalls is null) return;
@@ -240,16 +240,16 @@
 
 
     // Категории
-    private IEnumerable<VesselCall> Processing => VesselCalls.Where(v =>
-        (v.Stage == VesselCallStage.Handling));
+    private VesselCall[] Processing => VesselCalls.Where(v =>
+        (v.Stage == VesselCallStage.Handling)).ToArray();
 
-    private IEnumerable<VesselCall> Departured => VesselCalls.Where(v =>
-        v.Stage == VesselCallStage.Departured);
+    private VesselCall[] Departured => VesselCalls.Where(v =>
+        v.Stage == VesselCallStage.Departured).ToArray();
 
-    private IEnumerable<VesselCall> Waiting => VesselCalls.Where(v =>
-        v.Stage == VesselCallStage.Waiting);
+    private VesselCall[] Waiting => VesselCalls.Where(v =>
+        v.Stage == VesselCallStage.Waiting).ToArray();
 
-    private IEnumerable<VesselCall> Expected => VesselCalls.Where(v =>
-        v.Stage == VesselCallStage.Expected);
+    private VesselCall[] Expected => VesselCalls.Where(v =>
+        v.Stage == VesselCallStage.Expected).ToArray();
 
 }

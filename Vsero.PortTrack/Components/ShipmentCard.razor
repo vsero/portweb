@@ -12,13 +12,15 @@
         <MudCardHeader>
             <CardHeaderContent>
 
-                <MudStack Row="true" AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="w-100">
+                <MudStack Row="true" AlignItems="AlignItems.Start" Justify="Justify.SpaceBetween" Class="w-100; cursor-pointer">
 
                     @if (_cardExpanded)
                     {
-                        <MudText Typo="Typo.body1" Class="flex-grow-1 text-truncate">
-                            @Shipment.Title
-                        </MudText>
+                        <div @onclick:stopPropagation="true">
+                            <MudText Typo="Typo.body1" Class="flex-grow-1 text-truncate" Style="pointer-events: none;">
+                                @Shipment.Title
+                            </MudText>
+                        </div>
                     }
                     else
                     {
@@ -134,11 +136,11 @@
     [Parameter] public RenderFragment? CardActions { get; set; }
     [Parameter] public EventCallback<(CargoShipment shipment, bool expanded)> OnExpand { get; set; }
 
-    private IEnumerable<CargoHandlingEvent> _visibleEvents = [];
     private int _eventsCount = 0;
     private int _maxVisibleEvents = 5;
     private bool _eventsExpanded;
     private bool _cardExpanded;
+    private CargoHandlingEvent[] _visibleEvents = [];
     private CargoHandlingEvent? _lastEvent;
     private (Color color, String label) _lastEventStyle;
 
@@ -219,7 +221,7 @@
     {
         if (Shipment is not null)
         {
-            _visibleEvents = _eventsExpanded ? Shipment.HandlingEvents : Shipment.HandlingEvents.TakeLast(5);
+            _visibleEvents = _eventsExpanded ? Shipment.HandlingEvents : Shipment.HandlingEvents;//.TakeLast(5).ToArray();
             _eventsCount = Shipment.HandlingEvents.Count();
             _lastEvent = Shipment.HandlingEvents.Last();
             _lastEventStyle = LastEventStyle();
