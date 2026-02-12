@@ -27,10 +27,11 @@
         </MudStack>
     }
 
-    <MudStack Spacing="0">
+    <MudStack Spacing="2" Class="pa-2">
         @foreach (var shipment in _shipments)
         {
-            <MudSwipeArea OnSwipe="@((SwipeEventArgs e) => ShipmentCard_Swipe(e, shipment))" @key="shipment.Uuid" PreventDefault="false" Sensitivity="30" StopPropagation="true">
+            <div @key="shipment.Uuid" style="position: relative; overflow: hidden;">
+                <MudSwipeArea OnSwipe="@((SwipeEventArgs e) => ShipmentCard_Swipe(e, shipment))" @key="shipment.Uuid" PreventDefault="false" Sensitivity="100" StopPropagation="true" Class="mud-width-full" Style="touch-action: pan-y; width: 100%;">
                 <ShipmentCard @key="shipment.Uuid"
                               OnExpand="ShipmentCard_OnExpand"
                               Shipment="shipment"
@@ -45,6 +46,7 @@
                     </CardActions>
                 </ShipmentCard>
             </MudSwipeArea>
+            </div>
         }
     </MudStack>
 
