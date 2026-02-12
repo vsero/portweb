@@ -30,7 +30,7 @@
     <MudStack Spacing="0">
         @foreach (var shipment in _shipments)
         {
-            <MudSwipeArea OnSwipe="@((SwipeEventArgs e) => ShipmentCard_Swipe(e, shipment))" @key="shipment.Uuid">
+            <MudSwipeArea OnSwipe="@((SwipeEventArgs e) => ShipmentCard_Swipe(e, shipment))" @key="shipment.Uuid" PreventDefault="false" Sensitivity="30" StopPropagation="true">
                 <ShipmentCard @key="shipment.Uuid"
                               OnExpand="ShipmentCard_OnExpand"
                               Shipment="shipment"
