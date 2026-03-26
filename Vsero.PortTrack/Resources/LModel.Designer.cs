@@ -79,6 +79,15 @@ namespace Vsero.PortTrack.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cargo not found.
+        /// </summary>
+        public static string CargoNotFound {
+            get {
+                return ResourceManager.GetString("CargoNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Container.
         /// </summary>
         public static string Container {

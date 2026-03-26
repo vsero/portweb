@@ -210,4 +210,7 @@
   <data name="Departured" xml:space="preserve">
     <value>Departured</value>
   </data>
+  <data name="CargoNotFound" xml:space="preserve">
+    <value>Cargo not found</value>
+  </data>
 </root>

@@ -89,6 +89,7 @@
                             <MudText Typo="Typo.body2">@call.Berth.Title</MudText>
                         </div>
                     }
+                    @*
                     @if (call.Stage == VesselCallStage.Handling && call.StartUnloadingTimestamp > DateTime.MinValue)
                     {
                         <div class="d-flex justify-space-between">
@@ -109,10 +110,12 @@
                             <MudText Typo="Typo.caption">@LP.Departure:</MudText>
                             <MudText Typo="Typo.caption">@call.DepartureTimestamp.ToStringOrEmpty(LM.DateTimeFormat)</MudText>
                         </div>
-                    }                    
+                    }  
+                    *@
                 </MudStack>
 
-                @* Прогресс выгрузки *@
+
+                @* Прогресс выгрузки 
                 @if (Processing.Contains(call) && @call.UnStats.TotalPercent > 0)
                 {
                     <div class="mt-4">
@@ -122,7 +125,7 @@
                         </div>
                         <MudProgressLinear Color="Color.Info" Value="@call.UnStats.TotalPercent" Class="mud-width-full" />
                     </div>
-                }
+                } *@
             </MudCard>
         </MudItem>
     };

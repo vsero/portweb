@@ -127,7 +127,7 @@
         _shipment = shipment;
 
         if (_shipment is null)
-            _errorMessage = string.IsNullOrWhiteSpace(error) ? "Груз не найден" : error;
+            _errorMessage = string.IsNullOrWhiteSpace(error) ? LM.CargoNotFound : error;
 
     }
 

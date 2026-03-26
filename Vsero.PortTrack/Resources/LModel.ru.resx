@@ -210,4 +210,7 @@
   <data name="Departured" xml:space="preserve">
     <value>Завершен</value>
   </data>
+  <data name="CargoNotFound" xml:space="preserve">
+    <value>Груз не найден</value>
+  </data>
 </root>
