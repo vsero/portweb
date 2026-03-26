@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vsero.PortTrack</title>
+    <base href="/portweb/dev/" />
+    <link href="_framework/dotnet.3vdzdj1fwk.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-71m1r4yFQ+IiiX8KVq4b+NzXq7/a2K4SpLzsi4z7S5k=" />
+    <link rel="stylesheet" href="css/app.css" />
+    <script type="importmap">{
+  "imports": {
+    "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.66stpp682q.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.3vdzdj1fwk.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.ykrnppwhq2.js",
+    "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.peu2mfb29t.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/blazor.webassembly.66stpp682q.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
+    "./_framework/blazor.webassembly.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
+    "./_framework/dotnet.3vdzdj1fwk.js": "sha256-71m1r4yFQ+IiiX8KVq4b+NzXq7/a2K4SpLzsi4z7S5k=",
+    "./_framework/dotnet.js": "sha256-71m1r4yFQ+IiiX8KVq4b+NzXq7/a2K4SpLzsi4z7S5k=",
+    "./_framework/dotnet.native.js": "sha256-nheeN4H7Js+avp9nd/sQxdaehbeEx3qriXjiZ3pSw6U=",
+    "./_framework/dotnet.native.ykrnppwhq2.js": "sha256-nheeN4H7Js+avp9nd/sQxdaehbeEx3qriXjiZ3pSw6U=",
+    "./_framework/dotnet.runtime.js": "sha256-cajUr4vA/MpLPWj3omULUOwEQw3i8CE2n8AmDheqWBM=",
+    "./_framework/dotnet.runtime.peu2mfb29t.js": "sha256-cajUr4vA/MpLPWj3omULUOwEQw3i8CE2n8AmDheqWBM="
+  }
+}</script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <script src="js/telegram-web-app.js"></script>
+    <script>
+        window.getTelegramData = () => {
+            try {
+                // Проверяем, что объект Telegram существует в глобальном окне
+                if (window.Telegram && window.Telegram.WebApp) {
+                    const tg = window.Telegram.WebApp;
+                    // Сообщаем Telegram, что приложение готово (важно для Mini App)
+                    tg.ready();
+
+                    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                        return JSON.stringify(tg.initDataUnsafe);
+                    }
+                }
+            } catch (e) {
+                console.error("Ошибка при получении данных Telegram:", e);
+            }
+            return null;
+        };
+
+
+    </script>
+
+    <style>
+        :root {
+            /* MudBlazor theme */
+            --app-bg: #F5F7FA;
+            --app-text: #1F2933;
+            --app-loader-stroke: #0088CC; /* MudBlazor Primary */
+            --app-loader-bg: var(--app-bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* MudBlazor Dark Mode */
+                --app-bg: #32333D;
+                --app-text: #E6F4FF;
+                --app-loader-stroke: #26A5E4;
+                --app-loader-bg: var(--app-bg);
+            }
+        }
+
+        html, body {
+            background-color: var(--app-bg);
+        }
+
+        .loading-progress circle {
+            fill: none;
+            stroke: var(--app-loader-bg);
+        }
+
+            .loading-progress circle:last-child {
+                stroke: var(--app-loader-stroke);
+            }
+
+        .loading-progress-text {
+            fill: var(--app-text); /* Если текст внутри SVG (как <text>) */
+            color: var(--app-text); /* Если текст в обычном div */
+            font-family: "Roboto", sans-serif;
+            font-weight: 500;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <script src="_framework/blazor.webassembly.66stpp682q.js" autostart="false"></script>
+    <script>
+
+        (function () {
+            const culture = localStorage.getItem('selectedCulture') || 'ru-RU';
+            window.Blazor.start({
+                // установка сохраненной культуры
+                applicationCulture: culture
+            });
+        })();
+
+        // перехват события фокуса окна браузера
+        window.listenVisibilityChange = (dotNetHelper) => {
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === 'visible') {
+                    dotNetHelper.invokeMethodAsync('OnVisibilityChanged');
+                }
+            });
+        };
+
+        // перехват события активации MiniApp
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.onEvent('activated', () => {
+                console.log("Telegram App Activated");
+                dotNetHelper.invokeMethodAsync('OnVisibilityChanged');
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
